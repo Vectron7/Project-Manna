@@ -8,6 +8,12 @@ Sistema fullstack de notificações motivacionais que executa ao iniciar o siste
 
 ## Stack
 
+- React.js
+- Node.js
+- Express.js
+- Socket.IO
+- MySQL
+
 ### Frontend
 
 - React.js
