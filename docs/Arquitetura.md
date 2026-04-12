@@ -2,67 +2,72 @@
 
 ## Estilo
 
-- Cliente-Servidor
-- Event-driven
-- Comunicação em tempo real
+O sistema adota o estilo **Cliente-Servidor** com frontend e backend integrados em uma única aplicação Next.js. A comunicação ocorre via **HTTP/REST** — o frontend faz chamadas `fetch` para as API Routes do próprio Next.js, que atuam como backend.
 
 ---
 
 ## Stack
 
-### Frontend
-
-- React.js
-- Socket.IO Client
-
-### Backend
-
-- Node.js
-- Express.js
-- Socket.IO
-
-### Banco de Dados
-
-- MySQL
+| Camada | Tecnologia |
+| ------ | ---------- |
+| Frontend | React.js (via Next.js App Router) |
+| Backend | Next.js API Routes |
 
 ---
 
-## Fluxo
+## Diagrama
 
-1. Frontend inicia
-2. Popup exibido
-3. Usuário seleciona humor
-4. Evento enviado via Socket.IO
-5. Backend processa
-6. Mensagem gerada
-7. Dados salvos no MySQL
-8. Mensagem enviada ao frontend
-9. Popup exibido
+```.
+┌─────────────────────────────────────────────────────┐
+│                     Next.js                         │
+│                                                     │
+│   ┌──────────────┐   HTTP (fetch)  ┌─────────────┐  │
+│   │   Frontend   │ ──────────────► │  API Routes │  │
+│   │   React.js   │ ◄────────────── │  /api/mood  │  │
+│   └──────────────┘    JSON         └─────────────┘  │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+## Fluxo Principal
+
+1. O usuário abre a aplicação no browser.
+2. O frontend exibe o popup obrigatório.
+3. O usuário seleciona o humor.
+4. O frontend envia `POST /api/mood` com `{ mood: "feliz" }`.
+5. A API Route valida o payload e seleciona a mensagem motivacional correspondente.
+6. A API Route retorna `{ message: "..." }` com status `200`.
+7. O frontend exibe a mensagem motivacional ao usuário.
 
 ---
 
 ## Componentes
 
-- UI (React)
-- Socket Client
-- API (Express)
-- WebSocket Server
-- Service Layer
-- Banco de Dados
+| Componente | Responsabilidade |
+| ---------- | ---------------- |
+| **UI (React)** | Renderiza popup, seletor de humor e mensagem motivacional |
+| **API Route `/api/mood`** | Recebe humor, seleciona mensagem, persiste no banco e retorna resposta |
+| **Service Layer** | Lógica de mapeamento humor → mensagem, desacoplada da rota |
 
 ---
 
 ## Persistência
 
-Tabela: user_logs
+**Tabela:** `user_logs`
 
-- id
-- mood
-- message
-- created_at
+| Campo | Tipo | Descrição |
+| ----- | ---- | --------- |
+| `id` | `INT AUTO_INCREMENT` | Identificador único |
+| `mood` | `VARCHAR(50)` | Humor selecionado pelo usuário |
+| `message` | `TEXT` | Mensagem motivacional retornada |
+| `created_at` | `TIMESTAMP` | Data e hora da interação |
 
 ---
 
-## Comunicação
+## Decisões de Design
 
-- WebSocket via Socket.IO
+**Por que Next.js como backend?** As API Routes do Next.js eliminam a necessidade de um servidor Express separado, reduzindo a complexidade de deploy e manutenção para um projeto de escopo reduzido.
+
+**Por que HTTP em vez de WebSocket?** O fluxo de interação é pontual — o usuário seleciona o humor uma vez por sessão. Não há necessidade de canal persistente bidirecional; uma requisição HTTP convencional atende com menor overhead.

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentação do projeto
+    url: https://github.com/<org>/popup-abencoado/blob/main/README.md
+    about: Leia o README antes de abrir uma issue — a resposta pode já estar lá.
