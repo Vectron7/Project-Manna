@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  ci:
+    name: Lint, Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          # Variáveis necessárias para o build não quebrar
+          # Não precisam apontar para banco real — só evitar erros de import
+          DB_HOST: localhost
+          DB_PORT: 3306
+          DB_NAME: popup_abencoado
+          DB_USER: root
+          DB_PASSWORD: placeholder
+
+      - name: Test
+        run: npm test -- --passWithNoTests
