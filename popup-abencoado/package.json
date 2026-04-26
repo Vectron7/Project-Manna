@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "echo 'No tests specified'"
   },
   "dependencies": {
     "ls": "^0.2.1",
