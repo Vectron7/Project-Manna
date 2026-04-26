@@ -20,18 +20,20 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: popup-abencoado/package-lock.json
 
       - name: Install dependencies
+        working-directory: popup-abencoado
         run: npm ci
 
       - name: Lint
+        working-directory: popup-abencoado
         run: npm run lint
 
       - name: Build
+        working-directory: popup-abencoado
         run: npm run build
         env:
-          # Variáveis necessárias para o build não quebrar
-          # Não precisam apontar para banco real — só evitar erros de import
           DB_HOST: localhost
           DB_PORT: 3306
           DB_NAME: popup_abencoado
@@ -39,4 +41,5 @@ jobs:
           DB_PASSWORD: placeholder
 
       - name: Test
+        working-directory: popup-abencoado
         run: npm test -- --passWithNoTests
