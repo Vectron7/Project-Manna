@@ -3,7 +3,7 @@
  * Uso: npx tsx scripts/run-seed.ts
  */
 
-import { SeedService } from '../lib/seed/SeedService.ts';
+import { SeedService } from '../lib/seed/SeedService';
 
 async function main(): Promise<void> {
   try {
