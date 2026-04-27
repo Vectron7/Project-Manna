@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  ci:
+    name: Lint, Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: popup-abencoado/package-lock.json
+
+      - name: Install dependencies
+        working-directory: popup-abencoado
+        run: npm ci
+
+      - name: Lint
+        working-directory: popup-abencoado
+        run: npm run lint
+
+      - name: Build
+        working-directory: popup-abencoado
+        run: npm run build
+        env:
+          DB_HOST: localhost
+          DB_PORT: 3306
+          DB_NAME: popup_abencoado
+          DB_USER: root
+          DB_PASSWORD: placeholder
+
+      - name: Test
+        working-directory: popup-abencoado
+        run: npm test -- --passWithNoTests

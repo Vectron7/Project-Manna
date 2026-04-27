@@ -1,0 +1,69 @@
+name: 🐛 Bug Report
+description: Reporte um comportamento inesperado ou erro no sistema
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar! Preencha os campos abaixo com o máximo de detalhes possível.
+
+  - type: textarea
+    id: descricao
+    attributes:
+      label: Descrição do bug
+      description: O que aconteceu? O que você esperava que acontecesse?
+      placeholder: "Ex: Ao selecionar o humor 'Feliz', o popup trava e não exibe a mensagem motivacional."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducao
+    attributes:
+      label: Passos para reproduzir
+      description: Liste os passos necessários para reproduzir o comportamento.
+      placeholder: |
+        1. Abra a aplicação em http://localhost:3000
+        2. Selecione o humor 'Feliz'
+        3. Clique em Confirmar
+        4. Observe o erro
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamento-esperado
+    attributes:
+      label: Comportamento esperado
+      description: O que deveria ter acontecido?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou mensagens de erro
+      description: Cole aqui qualquer erro do console do browser ou do terminal.
+      render: shell
+
+  - type: dropdown
+    id: ambiente
+    attributes:
+      label: Ambiente
+      options:
+        - Desenvolvimento (localhost)
+        - Produção
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser e versão
+      placeholder: "Ex: Chrome 124, Firefox 125"
+
+  - type: input
+    id: node
+    attributes:
+      label: Versão do Node.js
+      placeholder: "Ex: 20.11.0"

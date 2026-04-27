@@ -1,0 +1,51 @@
+name: ✨ Feature Request
+description: Sugira uma nova funcionalidade ou melhoria
+labels: ["feature"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tem uma ideia para melhorar o Pop-up Abençoado? Conta pra gente!
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qual problema esta feature resolve?
+      description: Descreva o contexto. Ex — "Quando eu abro o sistema às 7h, não tenho como ver como estava meu humor ontem."
+      placeholder: "Como usuário, eu preciso de..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solucao
+    attributes:
+      label: Solução proposta
+      description: Descreva como você imagina que a feature funcionaria.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas consideradas
+      description: Você já pensou em outras formas de resolver o problema? Por que a sua proposta é melhor?
+
+  - type: dropdown
+    id: prioridade
+    attributes:
+      label: Prioridade percebida
+      options:
+        - Must Have — o sistema está incompleto sem isso
+        - Should Have — importante, mas dá pra funcionar sem
+        - Could Have — seria legal ter
+        - Won't Have — ideia para o futuro
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Prints, referências, links ou qualquer outra informação útil.
