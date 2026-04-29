@@ -41,6 +41,26 @@ import path from 'path'
 import fs from 'fs'
 import { MAPEAMENTO_HUMOR_VERSICULO } from '../../../lib/seed/mapping.seed.js'
 
+
+// TODO: [PENDÊNCIA] Aguardando implementação de conexão MySQL por outro dev.
+// Substituir esta classe quando lib/db/connection.ts estiver disponível.
+export class ContadorRepositoryMock implements ContadorRepository {
+  readonly #contadores = new Map<string, number>()
+
+  async buscarContador(userId: string): Promise<number> {
+    return this.#contadores.get(userId) ?? 0
+  }
+
+  async incrementarContador(userId: string): Promise<void> {
+    const atual = await this.buscarContador(userId)
+    this.#contadores.set(userId, atual + 1)
+  }
+
+  async resetarContador(userId: string): Promise<void> {
+    this.#contadores.set(userId, 0)
+  }
+}
+
 export class LogicofEmotionService {
   readonly #caminhoBiblia: string
   readonly #LIMITE_NAO_DIZER = 5
@@ -138,17 +158,23 @@ export class LogicofEmotionService {
     }
 
 
-  #lerTextoVersiculo(livro: string, capitulo: number, versiculo: number): string
-    {
-    try {
-      const caminho = path.join(this.#caminhoBiblia, `${livro}.json`)
-      const conteudo = fs.readFileSync(caminho, 'utf-8')
-      const dados = JSON.parse(conteudo) as Record<string, Record<string, string>>[]
-      return dados[0][String(capitulo)][String(versiculo)]
-    } catch {
-      return ''
-    }
-    }
+#lerTextoVersiculo(livro: string, capitulo: number, versiculo: number): string {
+  try {
+    const caminho = path.join(this.#caminhoBiblia, `${livro}.json`)
+    const conteudo = fs.readFileSync(caminho, 'utf-8')
+    const dados = JSON.parse(conteudo) as Record<string, Record<string, string>>[]
+    
+    const capituloStr = String(capitulo)
+    const versiculoStr = String(versiculo)
+    
+    const secao = dados.find((item) => item[capituloStr] !== undefined)
+    if (!secao) return ''
+    
+    return secao[capituloStr][versiculoStr] ?? ''
+  } catch {
+    return ''
+  }
+}
 
 
 
