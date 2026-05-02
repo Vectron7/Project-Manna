@@ -1,43 +1,38 @@
-name: CI
+name: CI - Quality Check
 
 on:
   push:
-    branches: [main, dev, feat/production-github-pages]
+    branches: [main, dev, "feat/**"]
   pull_request:
-    branches: [main, dev, feat/production-github-pages]
+    branches: [main, dev]
 
 jobs:
-  ci:
-    name: Lint, Build & Test
+  test-and-lint:
+    name: Lint & Build Test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./popup-abencoado
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          cache: 'npm'
           cache-dependency-path: popup-abencoado/package-lock.json
 
       - name: Install dependencies
-        working-directory: popup-abencoado
         run: npm ci
 
       - name: Lint
-        working-directory: popup-abencoado
         run: npm run lint
 
-      - name: Build
-        working-directory: popup-abencoado
+      - name: Build Test
         run: npm run build
         env:
-          # Variáveis de ambiente para o build não falhar
-          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
           NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
-
-      - name: Test
-        working-directory: popup-abencoado
-        run: npm test -- --passWithNoTests
+          DATABASE_URL: "postgresql://johndoe:random@localhost:5432/mydb"

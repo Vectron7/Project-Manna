@@ -1,13 +1,26 @@
-name: CD
+name: CD - Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, dev, feat/production-github-pages]
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  check-deploy-readiness:
-    name: Check Deploy Readiness
+  deploy:
+    name: Production Build & Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: "${{ steps.deployment.outputs.page_url }}"
+    defaults:
+      run:
+        working-directory: ./popup-abencoado
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,18 +33,23 @@ jobs:
           cache-dependency-path: popup-abencoado/package-lock.json
 
       - name: Install dependencies
-        working-directory: popup-abencoado
         run: npm ci
 
-      - name: Production Build
-        working-directory: popup-abencoado
+      - name: Build for Production
         run: npm run build
         env:
-          # Use as mesmas variáveis do CI
-          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
           NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
+          NEXT_PUBLIC_SUPABASE_URL: "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
 
-      - name: Success Message
-        run: |
-          echo "✅ Build de produção concluído com sucesso!"
-          echo "Os arquivos estáticos foram gerados. Se você usou distDir: '../docs', sua pasta docs na raiz foi atualizada."
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./popup-abencoado/out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
