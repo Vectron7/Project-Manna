@@ -1,0 +1,451 @@
+================================================================================
+RELATÓRIO DE VALIDAÇÃO BÍBLIA vs SEED
+Data: 5/3/2026, 5:32:06 PM
+================================================================================
+
+📖 1 corintios.json
+   - Total de versículos: 437
+   - Versículos com tags: 437
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 cronicas.json
+   - Total de versículos: 942
+   - Versículos com tags: 942
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 joao.json
+   - Total de versículos: 63
+   - Versículos com tags: 63
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 pedro.json
+   - Total de versículos: 105
+   - Versículos com tags: 105
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 reis.json
+   - Total de versículos: 816
+   - Versículos com tags: 816
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 samuel.json
+   - Total de versículos: 811
+   - Versículos com tags: 811
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 tessalonicenses.json
+   - Total de versículos: 89
+   - Versículos com tags: 89
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 1 timoteo.json
+   - Total de versículos: 113
+   - Versículos com tags: 113
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 corintios.json
+   - Total de versículos: 257
+   - Versículos com tags: 257
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 cronicas.json
+   - Total de versículos: 822
+   - Versículos com tags: 822
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 joao.json
+   - Total de versículos: 13
+   - Versículos com tags: 13
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 pedro.json
+   - Total de versículos: 61
+   - Versículos com tags: 61
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 reis.json
+   - Total de versículos: 719
+   - Versículos com tags: 719
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 samuel.json
+   - Total de versículos: 695
+   - Versículos com tags: 695
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 tessalonicenses.json
+   - Total de versículos: 47
+   - Versículos com tags: 47
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 2 timoteo.json
+   - Total de versículos: 83
+   - Versículos com tags: 83
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 3 joao.json
+   - Total de versículos: 15
+   - Versículos com tags: 15
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 ageu.json
+   - Total de versículos: 38
+   - Versículos com tags: 38
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 amos.json
+   - Total de versículos: 146
+   - Versículos com tags: 146
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 apocalipse.json
+   - Total de versículos: 405
+   - Versículos com tags: 405
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 atos.json
+   - Total de versículos: 1007
+   - Versículos com tags: 1007
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 canticos.json
+   - Total de versículos: 117
+   - Versículos com tags: 117
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 colossenses.json
+   - Total de versículos: 95
+   - Versículos com tags: 95
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+❌ daniel.json: Arquivo de seed NÃO ENCONTRADO
+   - Esperado: daniel.humor.json
+   - Verifique se o arquivo existe na pasta lib/seed/
+
+📖 deuteronomio.json
+   - Total de versículos: 959
+   - Versículos com tags: 959
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 eclesiastes.json
+   - Total de versículos: 222
+   - Versículos com tags: 222
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 efesios.json
+   - Total de versículos: 155
+   - Versículos com tags: 155
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 esdras.json
+   - Total de versículos: 280
+   - Versículos com tags: 280
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 ester.json
+   - Total de versículos: 167
+   - Versículos com tags: 167
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 exodo.json
+   - Total de versículos: 1213
+   - Versículos com tags: 1213
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 ezequiel.json
+   - Total de versículos: 1273
+   - Versículos com tags: 1273
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+❌ filemom.json: Arquivo de seed NÃO ENCONTRADO
+   - Esperado: filemom.humor.json
+   - Verifique se o arquivo existe na pasta lib/seed/
+
+📖 filipenses.json
+   - Total de versículos: 104
+   - Versículos com tags: 104
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 galatas.json
+   - Total de versículos: 149
+   - Versículos com tags: 149
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 genesis.json
+   - Total de versículos: 1533
+   - Versículos com tags: 1533
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 habacuque.json
+   - Total de versículos: 56
+   - Versículos com tags: 56
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 hebreus.json
+   - Total de versículos: 303
+   - Versículos com tags: 303
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 isaias.json
+   - Total de versículos: 1292
+   - Versículos com tags: 1292
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 jeremias.json
+   - Total de versículos: 1364
+   - Versículos com tags: 1364
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 jo.json
+   - Total de versículos: 1070
+   - Versículos com tags: 1070
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 joao.json
+   - Total de versículos: 879
+   - Versículos com tags: 879
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 joel.json
+   - Total de versículos: 73
+   - Versículos com tags: 73
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 jonas.json
+   - Total de versículos: 48
+   - Versículos com tags: 48
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 josue.json
+   - Total de versículos: 658
+   - Versículos com tags: 658
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 judas.json
+   - Total de versículos: 25
+   - Versículos com tags: 12
+   - Cobertura: 48.00%
+   ⚠️ VERSÍCULOS FALTANDO TAGS: 13
+      → Capítulo 1, Versículo 13
+      → Capítulo 1, Versículo 14
+      → Capítulo 1, Versículo 15
+      → Capítulo 1, Versículo 16
+      → Capítulo 1, Versículo 17
+      → Capítulo 1, Versículo 18
+      → Capítulo 1, Versículo 19
+      → Capítulo 1, Versículo 20
+      → Capítulo 1, Versículo 21
+      → Capítulo 1, Versículo 22
+      → Capítulo 1, Versículo 23
+      → Capítulo 1, Versículo 24
+      → Capítulo 1, Versículo 25
+
+📖 juizes.json
+   - Total de versículos: 618
+   - Versículos com tags: 618
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 lamentacoes de jeremias.json
+   - Total de versículos: 154
+   - Versículos com tags: 154
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 levitico.json
+   - Total de versículos: 859
+   - Versículos com tags: 859
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 lucas.json
+   - Total de versículos: 1151
+   - Versículos com tags: 1151
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 malaquias.json
+   - Total de versículos: 55
+   - Versículos com tags: 55
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 marcos.json
+   - Total de versículos: 678
+   - Versículos com tags: 678
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 mateus.json
+   - Total de versículos: 1071
+   - Versículos com tags: 1071
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 miqueias.json
+   - Total de versículos: 105
+   - Versículos com tags: 105
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 naum.json
+   - Total de versículos: 47
+   - Versículos com tags: 47
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 neemias.json
+   - Total de versículos: 406
+   - Versículos com tags: 406
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 numeros.json
+   - Total de versículos: 1288
+   - Versículos com tags: 1288
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 obadias.json
+   - Total de versículos: 21
+   - Versículos com tags: 16
+   - Cobertura: 76.19%
+   ⚠️ VERSÍCULOS FALTANDO TAGS: 5
+      → Capítulo 1, Versículo 17
+      → Capítulo 1, Versículo 18
+      → Capítulo 1, Versículo 19
+      → Capítulo 1, Versículo 20
+      → Capítulo 1, Versículo 21
+
+📖 oseias.json
+   - Total de versículos: 197
+   - Versículos com tags: 197
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 proverbios.json
+   - Total de versículos: 915
+   - Versículos com tags: 915
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 romanos.json
+   - Total de versículos: 433
+   - Versículos com tags: 433
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 rute.json
+   - Total de versículos: 85
+   - Versículos com tags: 85
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 salmos.json
+   - Total de versículos: 2461
+   - Versículos com tags: 2461
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 sofonias.json
+   - Total de versículos: 53
+   - Versículos com tags: 53
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 tiago.json
+   - Total de versículos: 108
+   - Versículos com tags: 108
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 tito.json
+   - Total de versículos: 46
+   - Versículos com tags: 46
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+📖 zacarias.json
+   - Total de versículos: 211
+   - Versículos com tags: 211
+   - Cobertura: 100.00%
+   ✅ Todos os versículos têm tags!
+
+================================================================================
+RESUMO FINAL
+================================================================================
+Total de livros com problemas: 2
+
+LIVROS QUE PRECISAM DE CORREÇÃO:
+
+📕 judas.json:
+   13 versículos sem tags
+     - Capítulo 1, Versículo 13
+     - Capítulo 1, Versículo 14
+     - Capítulo 1, Versículo 15
+     - Capítulo 1, Versículo 16
+     - Capítulo 1, Versículo 17
+     - Capítulo 1, Versículo 18
+     - Capítulo 1, Versículo 19
+     - Capítulo 1, Versículo 20
+     - Capítulo 1, Versículo 21
+     - Capítulo 1, Versículo 22
+     ... e mais 3 versículos
+
+📕 obadias.json:
+   5 versículos sem tags
+     - Capítulo 1, Versículo 17
+     - Capítulo 1, Versículo 18
+     - Capítulo 1, Versículo 19
+     - Capítulo 1, Versículo 20
+     - Capítulo 1, Versículo 21
+
+================================================================================
+COMO CORRIGIR:
+1. Para cada versículo listado acima, adicione uma tag no arquivo .humor.json
+2. Exemplo de tag: "13": "["Segurança"]"
+3. Múltiplas tags: "13": "["Segurança", "Paz"]"
+4. Se não se aplica, use: "13": "["Nao aplicavel"]"
+================================================================================
