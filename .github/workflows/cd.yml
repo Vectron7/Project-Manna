@@ -10,6 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: Production Build & Deploy
@@ -30,7 +34,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: popup-abencoado/package-lock.json
+          cache-dependency-path: ./popup-abencoado/package-lock.json
 
       - name: Install dependencies
         run: npm ci
