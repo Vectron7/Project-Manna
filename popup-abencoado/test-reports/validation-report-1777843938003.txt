@@ -1,6 +1,6 @@
 ================================================================================
 RELATÓRIO DE VALIDAÇÃO BÍBLIA vs SEED
-Data: 5/3/2026, 6:42:19 PM
+Data: 5/3/2026, 6:32:13 PM
 ================================================================================
 
 📖 1 corintios.json
@@ -185,9 +185,18 @@ Data: 5/3/2026, 6:42:19 PM
 
 📖 filemom.json
    - Total de versículos: 25
-   - Versículos com tags: 25
-   - Cobertura: 100.00%
-   ✅ Todos os versículos têm tags!
+   - Versículos com tags: 16
+   - Cobertura: 64.00%
+   ⚠️ VERSÍCULOS FALTANDO TAGS: 9
+      → Capítulo 1, Versículo 17
+      → Capítulo 1, Versículo 18
+      → Capítulo 1, Versículo 19
+      → Capítulo 1, Versículo 20
+      → Capítulo 1, Versículo 21
+      → Capítulo 1, Versículo 22
+      → Capítulo 1, Versículo 23
+      → Capítulo 1, Versículo 24
+      → Capítulo 1, Versículo 25
 
 📖 filipenses.json
    - Total de versículos: 104
@@ -263,9 +272,22 @@ Data: 5/3/2026, 6:42:19 PM
 
 📖 judas.json
    - Total de versículos: 25
-   - Versículos com tags: 25
-   - Cobertura: 100.00%
-   ✅ Todos os versículos têm tags!
+   - Versículos com tags: 12
+   - Cobertura: 48.00%
+   ⚠️ VERSÍCULOS FALTANDO TAGS: 13
+      → Capítulo 1, Versículo 13
+      → Capítulo 1, Versículo 14
+      → Capítulo 1, Versículo 15
+      → Capítulo 1, Versículo 16
+      → Capítulo 1, Versículo 17
+      → Capítulo 1, Versículo 18
+      → Capítulo 1, Versículo 19
+      → Capítulo 1, Versículo 20
+      → Capítulo 1, Versículo 21
+      → Capítulo 1, Versículo 22
+      → Capítulo 1, Versículo 23
+      → Capítulo 1, Versículo 24
+      → Capítulo 1, Versículo 25
 
 📖 juizes.json
    - Total de versículos: 618
@@ -335,9 +357,14 @@ Data: 5/3/2026, 6:42:19 PM
 
 📖 obadias.json
    - Total de versículos: 21
-   - Versículos com tags: 21
-   - Cobertura: 100.00%
-   ✅ Todos os versículos têm tags!
+   - Versículos com tags: 16
+   - Cobertura: 76.19%
+   ⚠️ VERSÍCULOS FALTANDO TAGS: 5
+      → Capítulo 1, Versículo 17
+      → Capítulo 1, Versículo 18
+      → Capítulo 1, Versículo 19
+      → Capítulo 1, Versículo 20
+      → Capítulo 1, Versículo 21
 
 📖 oseias.json
    - Total de versículos: 197
@@ -396,7 +423,43 @@ Data: 5/3/2026, 6:42:19 PM
 ================================================================================
 RESUMO FINAL
 ================================================================================
-Total de livros com problemas: 0
+Total de livros com problemas: 3
+
+LIVROS QUE PRECISAM DE CORREÇÃO:
+
+📕 filemom.json:
+   9 versículos sem tags
+     - Capítulo 1, Versículo 17
+     - Capítulo 1, Versículo 18
+     - Capítulo 1, Versículo 19
+     - Capítulo 1, Versículo 20
+     - Capítulo 1, Versículo 21
+     - Capítulo 1, Versículo 22
+     - Capítulo 1, Versículo 23
+     - Capítulo 1, Versículo 24
+     - Capítulo 1, Versículo 25
+
+📕 judas.json:
+   13 versículos sem tags
+     - Capítulo 1, Versículo 13
+     - Capítulo 1, Versículo 14
+     - Capítulo 1, Versículo 15
+     - Capítulo 1, Versículo 16
+     - Capítulo 1, Versículo 17
+     - Capítulo 1, Versículo 18
+     - Capítulo 1, Versículo 19
+     - Capítulo 1, Versículo 20
+     - Capítulo 1, Versículo 21
+     - Capítulo 1, Versículo 22
+     ... e mais 3 versículos
+
+📕 obadias.json:
+   5 versículos sem tags
+     - Capítulo 1, Versículo 17
+     - Capítulo 1, Versículo 18
+     - Capítulo 1, Versículo 19
+     - Capítulo 1, Versículo 20
+     - Capítulo 1, Versículo 21
 
 ================================================================================
 COMO CORRIGIR:
