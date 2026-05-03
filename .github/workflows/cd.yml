@@ -1,103 +1,59 @@
-name: CD
+name: CD - Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
+  workflow_dispatch:
 
-# ---------------------------------------------------------------------------
-# COMO CONFIGURAR O DEPLOY
-#
-# Escolha a plataforma e siga as instruções do bloco correspondente abaixo.
-# Descomente o bloco da sua plataforma e apague os demais.
-#
-# Plataformas suportadas:
-#   - Vercel   → descomente o bloco "Deploy — Vercel"
-#   - Railway  → descomente o bloco "Deploy — Railway"
-#   - Render   → descomente o bloco "Deploy — Render"
-#   - VPS      → descomente o bloco "Deploy — VPS (SSH)"
-# ---------------------------------------------------------------------------
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-
-  # ---------------------------------------------------------------------------
-  # Deploy — Vercel
-  # Pré-requisito: adicionar VERCEL_TOKEN, VERCEL_ORG_ID e VERCEL_PROJECT_ID
-  # em Settings > Secrets and variables > Actions do repositório.
-  # Guia: https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
-  # ---------------------------------------------------------------------------
-  # deploy-vercel:
-  #   name: Deploy to Vercel
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: npm
-  #     - run: npm ci
-  #     - run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
-  #       env:
-  #         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  #         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-  # ---------------------------------------------------------------------------
-  # Deploy — Railway
-  # Pré-requisito: adicionar RAILWAY_TOKEN em Secrets.
-  # Guia: https://docs.railway.app/guides/github-actions
-  # ---------------------------------------------------------------------------
-  # deploy-railway:
-  #   name: Deploy to Railway
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: railwayapp/railway-github-action@v1
-  #       with:
-  #         railway-token: ${{ secrets.RAILWAY_TOKEN }}
-
-  # ---------------------------------------------------------------------------
-  # Deploy — Render
-  # Pré-requisito: adicionar RENDER_API_KEY e RENDER_SERVICE_ID em Secrets.
-  # Guia: https://render.com/docs/deploy-hooks
-  # ---------------------------------------------------------------------------
-  # deploy-render:
-  #   name: Deploy to Render
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Trigger Render deploy hook
-  #       run: |
-  #         curl -X POST \
-  #           "https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}"
-
-  # ---------------------------------------------------------------------------
-  # Deploy — VPS (SSH)
-  # Pré-requisito: adicionar VPS_HOST, VPS_USER e VPS_SSH_KEY em Secrets.
-  # ---------------------------------------------------------------------------
-  # deploy-vps:
-  #   name: Deploy to VPS
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Deploy via SSH
-  #       uses: appleboy/ssh-action@v1
-  #       with:
-  #         host: ${{ secrets.VPS_HOST }}
-  #         username: ${{ secrets.VPS_USER }}
-  #         key: ${{ secrets.VPS_SSH_KEY }}
-  #         script: |
-  #           cd /var/www/popup-abencoado
-  #           git pull origin main
-  #           npm ci
-  #           npm run build
-  #           pm2 restart popup-abencoado
-
-  # ---------------------------------------------------------------------------
-  # Placeholder ativo — remova este job ao descomentaar o bloco real acima
-  # ---------------------------------------------------------------------------
-  pending:
-    name: Deploy (plataforma não configurada)
+  deploy:
+    name: Production Build & Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: "${{ steps.deployment.outputs.page_url }}"
+    defaults:
+      run:
+        working-directory: ./popup-abencoado
+
     steps:
-      - name: Aviso
-        run: |
-          echo "⚠️  CD ainda não configurado."
-          echo "Abra .github/workflows/cd.yml e descomente o bloco da sua plataforma."
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: ./popup-abencoado/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for Production
+        run: npm run build
+        env:
+          NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
+          NEXT_PUBLIC_SUPABASE_URL: "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./popup-abencoado/out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
