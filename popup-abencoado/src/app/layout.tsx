@@ -14,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-br" className={calligraffitti.className}>
-      <body>
+    <html lang="pt-br">
+      <body className={calligraffitti.className}>
         <AssetPreloader />
         {children}
       </body>
