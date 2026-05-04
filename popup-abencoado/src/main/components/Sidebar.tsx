@@ -19,6 +19,7 @@ export default function Sidebar() {
           alt="Menu" 
           width={28} 
           height={28} 
+          style={{ height: 'auto' }}
           priority
         />
       </button>
