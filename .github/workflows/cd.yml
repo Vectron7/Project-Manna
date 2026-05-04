@@ -1,26 +1,15 @@
-name: CD - Deploy to GitHub Pages
+name: CI - Quality Check
 
 on:
   push:
+    branches: [main, dev, "feat/**"]
+  pull_request:
     branches: [main, dev]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Production Build & Deploy
+  test-and-lint:
+    name: Lint & Build Test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: "${{ steps.deployment.outputs.page_url }}"
     defaults:
       run:
         working-directory: ./popup-abencoado
@@ -29,31 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: ./popup-abencoado/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build for Production
+      - name: Lint
+        run: npm run lint
+
+      - name: Build Test (static export)
         run: npm run build
         env:
-          NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
+          NEXT_PUBLIC_URL: "https://placeholder.com"
           NEXT_PUBLIC_SUPABASE_URL: "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
           NEXT_PUBLIC_SUPABASE_ANON_KEY: "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./popup-abencoado/out
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

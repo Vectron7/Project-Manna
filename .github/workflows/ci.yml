@@ -1,39 +1,49 @@
-name: CI - Quality Check
+# .github/workflows/vercel.yml
+name: Deploy to Vercel
 
 on:
   push:
-    branches: [main, dev, "feat/**"]
-  pull_request:
     branches: [main, dev]
+  pull_request:
+    branches: [main]
 
 jobs:
-  test-and-lint:
-    name: Lint & Build Test
+  deploy-preview:
+    name: Deploy Preview
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./popup-abencoado
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-          cache-dependency-path: ./popup-abencoado/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Build Test
-        run: npm run build
+      - uses: actions/checkout@v4
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+      
+      - name: Deploy to Vercel (Preview)
+        run: vercel --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
-          NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
-          NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  deploy-production:
+    name: Deploy Production
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./popup-abencoado
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+      
+      - name: Deploy to Vercel (Production)
+        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
