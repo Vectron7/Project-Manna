@@ -1,5 +1,6 @@
 'use client';
 import styles from './landing.module.css';
+import Sidebar from '../../main/components/Sidebar';
 
 export default function LandingPage() {
   const hora = typeof window !== 'undefined' ? new Date().getHours() : 0;
@@ -10,6 +11,7 @@ export default function LandingPage() {
 
   return (
     <main className={styles.landingContainer}>
+      <Sidebar />
       <div className={styles.contentOverlay}>
         <p className={styles.messageCalligraffitti}>{saudacao}, Amado!</p>
         <p className={styles.messageCalligraffitti}>Que Deus esteja contigo!</p>
