@@ -35,6 +35,7 @@ export const ASSETS_TO_PRELOAD = {
             "FolhasdePapel04.png",
             "FolhasdePapel05.png",
             "FolhasdePapel06.png",
+            "FolhasdePapel07.png",
             "Fotos01.png",
             "Fotos02.png",
             "Fotos03.png",
