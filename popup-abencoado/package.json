@@ -12,6 +12,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@emnapi/core": "^1.10.0",
+    "@emnapi/runtime": "^1.10.0",
+    "@supabase/supabase-js": "^2.105.2",
     "ls": "^0.2.1",
     "next": "^16.1.7",
     "react": "^19.2.4",
