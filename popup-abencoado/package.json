@@ -8,10 +8,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "echo 'No tests specified'"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@prisma/client": "^7.8.0",
+    "@emnapi/core": "^1.10.0",
+    "@emnapi/runtime": "^1.10.0",
+    "@supabase/supabase-js": "^2.105.2",
+    "dotenv": "^17.4.2",
     "ls": "^0.2.1",
     "next": "^16.1.7",
     "react": "^19.2.4",
@@ -19,14 +23,17 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.19.37",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^9",
     "eslint-config-next": "16.1.7",
-    "prisma": "^7.8.0",
+    "jest": "^30.3.0",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.9",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vitest": "^4.1.5"
   },

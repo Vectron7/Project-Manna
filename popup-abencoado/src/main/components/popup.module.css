@@ -1,0 +1,112 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.popupCard {
+  width: 90%;
+  max-width: 800px;
+  padding: 60px 40px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  background-image: url('/assets/Logo e Wallpapers/Wallpaper.Ceu.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popupCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  z-index: 1;
+}
+
+.headerBox {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px 60px;
+  border-radius: 80px;
+  margin-bottom: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.title {
+  font-family: 'Calligraffitti', cursive;
+  color: #fff;
+  font-size: 2.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.btnOutline, .btnSolid, .btnLong {
+  padding: 15px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnOutline {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid #a67c32;
+  color: white;
+}
+
+.btnSolid {
+  background: #e69138;
+  border: 2px solid #e69138;
+  color: #000;
+  font-weight: bold;
+}
+
+.btnLong {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid #a67c32;
+  color: white;
+  margin-top: 10px;
+}
+
+.btnOutline:hover, .btnLong:hover {
+  background: rgba(166, 124, 50, 0.2);
+  transform: scale(1.02);
+}
+
+.btnSolid:hover {
+  background: #ffaa4f;
+  transform: scale(1.02);
+}

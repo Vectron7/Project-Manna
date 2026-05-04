@@ -1,0 +1,106 @@
+.menuBtn {
+  position: fixed;
+  top: 60px;
+  left: 20px; 
+  width: 55px;
+  height: 55px;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menuBtn.open {
+  left: 222.5px; 
+}
+
+.menuBtn:hover {
+  transform: scale(1.05);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(60, 50, 45, 0.9) 0%, rgba(40, 35, 30, 0.95) 100%);
+  backdrop-filter: blur(8px);
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 15px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logoContainer {
+  width: 120px;
+  height: 115px;
+  border: 4px solid white;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 15px;
+  background-color: #8b6b23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.saudacaoSide {
+  font-family: inherit;
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.navLinks {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  gap: 15px;
+}
+
+.navItem:hover {
+  background: #a67c32;
+  color: #ffffff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 98;
+}

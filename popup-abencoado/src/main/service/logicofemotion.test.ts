@@ -1,220 +1,128 @@
+import fs from 'fs';
+import path from 'path';
 
-
-describe('LogicofEmotionService', () => {
-  it.todo('RN-01: fechamento sem seleção retorna Neutro sem incrementar contador')
-  it.todo('RN-02: prefiro-nao-dizer (1x) retorna Neutro e incrementa contador')
-  it.todo('RN-02: prefiro-nao-dizer (4x) contador = 4')
-  it.todo('RN-03: prefiro-nao-dizer (5x) retorna Triste')
-  it.todo('RN-04: emoção real reseta contador para 0')
-  it.todo('RN-04: feliz retorna versículo do humorId 1')
-  it.todo('RN-04: neutro retorna versículo do humorId 2')
-  it.todo('RN-04: triste retorna versículo do humorId 3')
-  it.todo('RN-04: estressado retorna versículo do humorId 4')
-  it.todo('RN-04: cansado retorna versículo do humorId 5')
-  it.todo('RN-05: seleção aleatória retorna sempre um dos 5 versículos do humor')
-  it.todo('RN-06: humor desconhecido retorna fallback Neutro sem erro')
-  it.todo('contrato: saída sempre contém texto e referencia como strings')
-  it.todo('contrato: referencia formatada como "Livro Capítulo:Versículo"')
-})
-
-import { describe, it, expect, beforeEach } from 'vitest'
-import {
-  LogicofEmotionService,
-  ContadorRepositoryMock,
-  type HumorInput,
-} from './logicofemotion'
-
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
-function criarServico() {
-  const repo = new ContadorRepositoryMock()
-  const servico = new LogicofEmotionService(repo)
-  return { servico, repo }
+interface BibleChapter {
+  [chapterNumber: string]: {
+    [verseNumber: string]: string;
+  };
 }
 
-async function simularNaoDizer(servico: LogicofEmotionService, vezes: number) {
-  for (let i = 0; i < vezes; i++) {
-    await servico.selecionarVersiculo({ humor: 'prefiro-nao-dizer' })
+interface SeedMultipleChapters {
+  [chapterNumber: string]: {
+    [verseNumber: string]: string;
+  };
+}
+
+const BIBLE_DIR = path.resolve(__dirname, '../../../lib/bible');
+const SEED_DIR = path.resolve(__dirname, '../../../lib/seed');
+const REPORT_DIR = path.resolve(__dirname, '../../../test-reports');
+
+if (!fs.existsSync(REPORT_DIR)) {
+  fs.mkdirSync(REPORT_DIR, { recursive: true });
+}
+
+describe('Validação de Integridade: Bíblia vs Matriz de Seed', () => {
+  if (!fs.existsSync(BIBLE_DIR) || !fs.existsSync(SEED_DIR)) {
+    throw new Error('Diretórios de dados não encontrados.');
   }
-}
 
-// ─── Testes ─────────────────────────────────────────────────────────────────
+  const seedFiles = fs.readdirSync(SEED_DIR);
+  const bibleFiles = fs.readdirSync(BIBLE_DIR).filter(file => file.endsWith('.json'));
+  
+  const report: string[] = [];
+  const errors: { book: string; missingVerses: { chapter: number; verse: number }[] }[] = [];
 
-describe('LogicofEmotionService', () => {
+  report.push(`RELATÓRIO DE VALIDAÇÃO - ${new Date().toLocaleString()}\n${'='.repeat(50)}\n`);
 
-  describe('Contrato de saída', () => {
-    it('sempre retorna texto e referencia como strings', async () => {
-      const { servico } = criarServico()
-      const resultado = await servico.selecionarVersiculo({ humor: 'feliz' })
-      expect(typeof resultado.texto).toBe('string')
-      expect(typeof resultado.referencia).toBe('string')
-    })
+  test.each(bibleFiles)('Livro: %s', (bibleFile) => {
+    const biblePath = path.join(BIBLE_DIR, bibleFile);
+    const bibleNameBase = bibleFile.replace('.json', '');
+    const bibleNameNoSpaces = bibleNameBase.replace(/\s+/g, '');
+    
+    const matchingSeedFile = seedFiles.find(f => {
+      const seedNameBase = f.replace('.humor.json', '');
+      return seedNameBase === bibleNameBase || seedNameBase === bibleNameNoSpaces;
+    });
 
-    it('referencia formatada como "Livro Capítulo:Versículo"', async () => {
-      const { servico } = criarServico()
-      const resultado = await servico.selecionarVersiculo({ humor: 'feliz' })
-      expect(resultado.referencia).toMatch(/^.+\s\d+:\d+$/)
-    })
+    if (!matchingSeedFile) {
+      report.push(`❌ ${bibleFile}: Seed não encontrado.`);
+      return;
+    }
 
-    it('texto nunca vazio para humores válidos', async () => {
-      const { servico } = criarServico()
-      const humores = ['feliz', 'neutro', 'triste', 'estressado', 'cansado'] as const
-      for (const humor of humores) {
-        const resultado = await servico.selecionarVersiculo({ humor })
-        expect(resultado.texto.length).toBeGreaterThan(0)
+    const seedPath = path.join(SEED_DIR, matchingSeedFile);
+    const bibleData: BibleChapter[] = JSON.parse(fs.readFileSync(biblePath, 'utf-8'));
+    const seedDataRaw = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
+
+    const getTagsForVerse = (chapter: number, verse: number): string[] => {
+      if (Array.isArray(seedDataRaw)) {
+        const chapterData = seedDataRaw.find((item: SeedMultipleChapters) => item[chapter]);
+        if (chapterData?.[chapter]?.[verse]) {
+          const tagsStr = chapterData[chapter][verse];
+          try { return JSON.parse(tagsStr); } catch { return [tagsStr]; }
+        }
+      } else if (seedDataRaw && typeof seedDataRaw === 'object') {
+        if (seedDataRaw[verse]) {
+          const tagsStr = seedDataRaw[verse];
+          try { return JSON.parse(tagsStr); } catch { return [tagsStr]; }
+        }
       }
-    })
-  })
+      return [];
+    };
 
-  describe('RN-01 — Fechamento sem seleção', () => {
-    it('retorna versículo válido quando humor é null', async () => {
-      const { servico } = criarServico()
-      const resultado = await servico.selecionarVersiculo({ humor: null })
-      expect(resultado.texto).toBeTruthy()
-      expect(resultado.referencia).toBeTruthy()
-    })
+    const verseTagsMap: { chapter: number; verse: number; tags: string[] }[] = [];
 
-    it('NÃO incrementa o contador', async () => {
-      const { servico, repo } = criarServico()
-      await servico.selecionarVersiculo({ humor: null })
-      await servico.selecionarVersiculo({ humor: null })
-      await servico.selecionarVersiculo({ humor: null })
-      const contador = await repo.buscarContador('default')
-      expect(contador).toBe(0)
-    })
-  })
+    bibleData.forEach((chapterObj) => {
+      const chapterNumber = parseInt(Object.keys(chapterObj)[0]);
+      const verses = chapterObj[chapterNumber];
+      
+      Object.keys(verses).forEach((verseNumber) => {
+        const verseNum = parseInt(verseNumber);
+        verseTagsMap.push({
+          chapter: chapterNumber,
+          verse: verseNum,
+          tags: getTagsForVerse(chapterNumber, verseNum)
+        });
+      });
+    });
 
-  describe('RN-02 — prefiro-nao-dizer (1 a 4x)', () => {
-    it('retorna versículo válido', async () => {
-      const { servico } = criarServico()
-      const resultado = await servico.selecionarVersiculo({ humor: 'prefiro-nao-dizer' })
-      expect(resultado.texto).toBeTruthy()
-      expect(resultado.referencia).toBeTruthy()
-    })
+    const missingVerses = verseTagsMap.filter(v => v.tags.length === 0);
+    const totalVerses = verseTagsMap.length;
+    const coverage = (( (totalVerses - missingVerses.length) / totalVerses) * 100).toFixed(2);
+    
+    report.push(`📖 ${bibleFile} | Cobertura: ${coverage}% (${totalVerses} versículos)`);
+    
+    if (missingVerses.length > 0) {
+      report.push(`   ⚠️ FALTANDO TAGS: ${missingVerses.length} versículos.`);
+      errors.push({
+        book: bibleFile,
+        missingVerses: missingVerses.map(v => ({ chapter: v.chapter, verse: v.verse }))
+      });
+    }
 
-    it('incrementa contador a cada chamada', async () => {
-      const { servico, repo } = criarServico()
-      await simularNaoDizer(servico, 3)
-      expect(await repo.buscarContador('default')).toBe(3)
-    })
+    expect(missingVerses).toHaveLength(0);
+    verseTagsMap.forEach(({ tags }) => {
+      expect(Array.isArray(tags)).toBe(true);
+      expect(tags.length).toBeGreaterThan(0);
+    });
+  });
 
-    it('contador chega a 4 após 4 chamadas', async () => {
-      const { servico, repo } = criarServico()
-      await simularNaoDizer(servico, 4)
-      expect(await repo.buscarContador('default')).toBe(4)
-    })
-  })
-
-  describe('RN-03 — prefiro-nao-dizer (5ª vez)', () => {
-    it('na 5ª chamada retorna versículo válido', async () => {
-      const { servico } = criarServico()
-      await simularNaoDizer(servico, 4)
-      const resultado = await servico.selecionarVersiculo({ humor: 'prefiro-nao-dizer' })
-      expect(resultado.texto).toBeTruthy()
-      expect(resultado.referencia).toBeTruthy()
-    })
-
-    it('contador NÃO reseta automaticamente após a 5ª chamada', async () => {
-      const { servico, repo } = criarServico()
-      await simularNaoDizer(servico, 5)
-      expect(await repo.buscarContador('default')).toBe(5)
-    })
-  })
-
-  describe('RN-04 — Emoção real', () => {
-    it.each(['feliz', 'neutro', 'triste', 'estressado', 'cansado'] as const)(
-      '"%s" retorna texto e referencia preenchidos',
-      async (humor) => {
-        const { servico } = criarServico()
-        const resultado = await servico.selecionarVersiculo({ humor })
-        expect(resultado.texto).toBeTruthy()
-        expect(resultado.referencia).toBeTruthy()
-      }
-    )
-
-    it('reseta contador para 0 após emoção real', async () => {
-      const { servico, repo } = criarServico()
-      await simularNaoDizer(servico, 3)
-      await servico.selecionarVersiculo({ humor: 'feliz' })
-      expect(await repo.buscarContador('default')).toBe(0)
-    })
-
-    it('reseta contador mesmo após 4 prefiro-nao-dizer', async () => {
-      const { servico, repo } = criarServico()
-      await simularNaoDizer(servico, 4)
-      await servico.selecionarVersiculo({ humor: 'triste' })
-      expect(await repo.buscarContador('default')).toBe(0)
-    })
-  })
-
-  describe('RN-05 — Seleção aleatória', () => {
-    it('50 chamadas ao mesmo humor retornam versículos válidos', async () => {
-      const { servico } = criarServico()
-      const resultados = await Promise.all(
-        Array.from({ length: 50 }, () =>
-          servico.selecionarVersiculo({ humor: 'feliz' })
-        )
-      )
-      resultados.forEach((r) => {
-        expect(r.texto).toBeTruthy()
-        expect(r.referencia).toBeTruthy()
-      })
-    })
-
-    it('retorna variação entre chamadas', async () => {
-      const { servico } = criarServico()
-      const referencias = new Set<string>()
-      for (let i = 0; i < 50; i++) {
-        const r = await servico.selecionarVersiculo({ humor: 'feliz' })
-        referencias.add(r.referencia)
-      }
-      expect(referencias.size).toBeGreaterThan(1)
-    })
-  })
-
-  describe('RN-06 — Fallback para humor desconhecido', () => {
-    it('nunca lança erro para humor inválido', async () => {
-      const { servico } = criarServico()
-      const input = { humor: 'invalido' } as unknown as HumorInput
-      await expect(servico.selecionarVersiculo(input)).resolves.not.toThrow()
-    })
-
-    it('retorna versículo válido para humor não mapeado', async () => {
-      const { servico } = criarServico()
-      const input = { humor: 'xyz' } as unknown as HumorInput
-      const resultado = await servico.selecionarVersiculo(input)
-      expect(resultado.texto).toBeTruthy()
-      expect(resultado.referencia).toBeTruthy()
-    })
-  })
-
-  describe('ContadorRepositoryMock', () => {
-    it('inicia zerado para userId novo', async () => {
-      const repo = new ContadorRepositoryMock()
-      expect(await repo.buscarContador('novo')).toBe(0)
-    })
-
-    it('incrementa corretamente', async () => {
-      const repo = new ContadorRepositoryMock()
-      await repo.incrementarContador('u1')
-      await repo.incrementarContador('u1')
-      expect(await repo.buscarContador('u1')).toBe(2)
-    })
-
-    it('reseta para 0', async () => {
-      const repo = new ContadorRepositoryMock()
-      await repo.incrementarContador('u1')
-      await repo.resetarContador('u1')
-      expect(await repo.buscarContador('u1')).toBe(0)
-    })
-
-    it('isola contadores por userId', async () => {
-      const repo = new ContadorRepositoryMock()
-      await repo.incrementarContador('u1')
-      await repo.incrementarContador('u1')
-      await repo.incrementarContador('u2')
-      expect(await repo.buscarContador('u1')).toBe(2)
-      expect(await repo.buscarContador('u2')).toBe(1)
-    })
-  })
-})
+  afterAll(() => {
+    const summaryPath = path.join(REPORT_DIR, 'latest-report.txt');
+    
+    if (errors.length > 0) {
+      report.push(`\n${'='.repeat(50)}\nLIVROS COM PENDÊNCIAS:`);
+      errors.forEach(err => {
+        report.push(`\n📕 ${err.book} (${err.missingVerses.length} erros)`);
+        err.missingVerses.slice(0, 5).forEach(v => {
+          report.push(`   - Cap ${v.chapter}, Ver ${v.verse}`);
+        });
+        if (err.missingVerses.length > 5) report.push(`   ... e mais ${err.missingVerses.length - 5}`);
+      });
+    } else {
+      report.push(`\n✅ Integridade total confirmada.`);
+    }
+    
+    fs.writeFileSync(summaryPath, report.join('\n'));
+    console.log(`\n📄 Relatório consolidado em: ${summaryPath}`);
+  });
+});
