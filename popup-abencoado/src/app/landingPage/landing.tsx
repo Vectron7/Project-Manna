@@ -1,6 +1,5 @@
 'use client';
 import styles from './landing.module.css';
-import Sidebar from '../../main/components/Sidebar';
 
 export default function LandingPage() {
   const hora = typeof window !== 'undefined' ? new Date().getHours() : 0;
