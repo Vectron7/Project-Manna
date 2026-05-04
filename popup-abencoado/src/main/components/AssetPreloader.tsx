@@ -11,9 +11,6 @@ export default function AssetPreloader() {
       category.files.forEach((file) => {
         const img = new Image();
         
-        img.onload = () => console.log(`Assets carregado: ${file}`);
-        img.onerror = () => console.error(`Erro ao carregar: ${file} em ${category.path}`);
-        
         img.src = `${category.path}/${file}`;
       });
     });
