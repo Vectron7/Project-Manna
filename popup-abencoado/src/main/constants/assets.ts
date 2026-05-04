@@ -1,6 +1,8 @@
+const BASE_PATH = ''; 
+
 export const ASSETS_TO_PRELOAD = {
     icones: {
-        path: "/assets/Icones SVG",
+        path: `${BASE_PATH}/assets/Icones SVG`,
         files: [
             "Icone.AnotarC.svg",
             "Icone.Biblia.svg",
@@ -14,7 +16,7 @@ export const ASSETS_TO_PRELOAD = {
         ]
     },
     itensRecortados: {
-        path: "/assets/Itens Recortados",
+        path: `${BASE_PATH}/assets/Itens Recortados`,
         files: [
             "Fita01.png",
             "Fita02.png",
@@ -53,7 +55,7 @@ export const ASSETS_TO_PRELOAD = {
         ]
     },
     logoWallpapers: {
-        path: "/assets/Logo e Wallpapers",
+        path: `${BASE_PATH}/assets/Logo e Wallpapers`,
         files: [
             "Logo.svg",
             "Wallpaper.Ceu.png",
