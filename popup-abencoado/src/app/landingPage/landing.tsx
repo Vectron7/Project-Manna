@@ -1,5 +1,4 @@
 'use client';
-
 import styles from './landing.module.css';
 
 export default function LandingPage() {
@@ -12,8 +11,8 @@ export default function LandingPage() {
   return (
     <main className={styles.landingContainer}>
       <div className={styles.contentOverlay}>
-        <p className="message-calligraffitti">{saudacao}, Amado!</p>
-        <p className="message-calligraffitti">Que Deus esteja contigo!</p>
+        <p className={styles.messageCalligraffitti}>{saudacao}, Amado!</p>
+        <p className={styles.messageCalligraffitti}>Que Deus esteja contigo!</p>
       </div>
     </main>
   );
