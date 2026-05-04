@@ -11,7 +11,6 @@ export default function LandingPage() {
 
   return (
     <main className={styles.landingContainer}>
-      <Sidebar />
       <div className={styles.contentOverlay}>
         <p className={styles.messageCalligraffitti}>{saudacao}, Amado!</p>
         <p className={styles.messageCalligraffitti}>Que Deus esteja contigo!</p>
