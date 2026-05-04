@@ -19,19 +19,25 @@ const getRandomFeeling = () => {
 };
 
 export default function Popup() {
+  // Inicializamos como false para não renderizar nada no servidor (SSR)
   const [isVisible, setIsVisible] = useState(false);
   const [mappedVerse, setMappedVerse] = useState<{ texto: string; ref: string } | null>(null);
 
   useEffect(() => {
-    // Usamos o seu utilitário de persistência para pegar o ID
-    const id = getOrSetUserId();
-    const today = new Date().toISOString().split('T')[0];
-    const lastResponse = localStorage.getItem(`mood_response_${id}`);
-    
-    if (lastResponse !== today) {
-      setIsVisible(true);
-    }
-  }, []);
+    // A lógica de verificação fica dentro do useEffect, mas usamos um 
+    // verificador para garantir que o estado só mude se necessário.
+    const checkVisibility = () => {
+      const id = getOrSetUserId();
+      const today = new Date().toISOString().split('T')[0];
+      const lastResponse = localStorage.getItem(`mood_response_${id}`);
+      
+      if (lastResponse !== today) {
+        setIsVisible(true);
+      }
+    };
+
+    checkVisibility();
+  }, []); // Array vazio garante que rode apenas uma vez no mount
 
   const handleSelection = useCallback(async (feeling: string) => {
     const id = getOrSetUserId();
@@ -55,11 +61,7 @@ export default function Popup() {
 
       const result = await response.json();
       
-      // LOG FORMATADO: Agora você verá o texto diretamente no console
       console.log("✨ Versículo Gerado:", result.data.texto);
-      console.log("📖 Referência:", result.data.ref);
-      console.dir(result.data); // Exibe o objeto estruturado
-
       setMappedVerse(result.data);
       
       const today = new Date().toISOString().split('T')[0];
@@ -75,13 +77,15 @@ export default function Popup() {
     setMappedVerse(null); 
   };
 
+  // Importante para evitar erros de hidratação no Next.js
   if (!isVisible) return null;
 
   return (
     <div className={styles.overlay}>
+      {/* Aqui começaremos a aplicar o estilo das imagens que você enviou */}
       <div className={styles.popupCard}>
         {!mappedVerse ? (
-          <>
+          <div className={styles.selectionState}>
             <div className={styles.headerBox}>
               <h2 className={styles.title}>Como está se sentindo hoje?</h2>
             </div>
@@ -101,14 +105,20 @@ export default function Popup() {
             <button className={styles.btnLong} onClick={() => handleSelection('privado')}>
               Prefiro não dizer hoje
             </button>
-          </>
+          </div>
         ) : (
-          <div className={styles.verseContainer}>
-            <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
-            <span className={styles.verseRef}>{mappedVerse.ref}</span>
-            <button className={styles.btnClose} onClick={handleClose}>
-              Amém
-            </button>
+          <div className={styles.verseState}>
+            {/* O conteúdo abaixo será envelopado pela imagem do papel antigo */}
+            <div className={styles.paperBackground}>
+              <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
+              <span className={styles.verseRef}>{mappedVerse.ref}</span>
+              
+              <div className={styles.actions}>
+                 <button className={styles.btnClose} onClick={handleClose}>
+                    Amém
+                 </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
