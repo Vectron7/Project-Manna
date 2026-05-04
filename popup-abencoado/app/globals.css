@@ -24,3 +24,31 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+h1, h2, .titulo-especial {
+  font-family: 'Calligraffitti', cursive;
+}
+
+.fonte-biblica {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: #3d2b1f;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+.versiculo-numero {
+  font-size: 0.8rem;
+  vertical-align: super;
+  margin-right: 4px;
+  font-weight: bold;
+  color: #5d4037;
+}
+
+.titulo-capitulo {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  color: #2b1d12;
+  margin-bottom: 20px;
+}
