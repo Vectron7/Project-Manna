@@ -1,38 +1,48 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './popup.module.css';
+import Image from 'next/image';
 
 interface FavoriteButtonProps {
-  userId: string;
   verseId: string;
 }
 
-export function FavoriteButton({ userId, verseId }: FavoriteButtonProps) {
+export default function FavoriteButton({ verseId }: FavoriteButtonProps) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggle = async () => {
-    if (isLoading || !userId) return;
+  const handleToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-    setIsLoading(true);
+    if (isLoading || !verseId) {
+      return;
+    }
+
     const prevState = isFavorited;
     setIsFavorited(!prevState);
+    setIsLoading(true);
 
     try {
       const response = await fetch('/api/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, verseId, origin: 'popup' }),
+        body: JSON.stringify({
+          verseId: verseId,
+        }),
       });
 
-      const result = await response.json();
-      if (!result.success) throw new Error();
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Erro retornado pela API:", errorData);
+        throw new Error('Erro na persistência');
+      }
       
-      setIsFavorited(result.data.action === 'added');
-    } catch {
+      console.log("Favorito atualizado com sucesso!");
+
+    } catch (error) {
+      console.error("Erro ao salvar favorito:", error);
       setIsFavorited(prevState);
-      console.error("Erro ao favoritar");
     } finally {
       setIsLoading(false);
     }
@@ -40,20 +50,33 @@ export function FavoriteButton({ userId, verseId }: FavoriteButtonProps) {
 
   return (
     <button 
-      className={`${styles.btnFavorite} ${isFavorited ? styles.active : ''}`} 
-      onClick={handleToggle}
+      onClick={handleToggle} 
       disabled={isLoading}
-      style={{ opacity: isLoading ? 0.7 : 1, border: 'none', background: 'none', cursor: 'pointer' }}
+      style={{ 
+        background: 'none',
+        border: 'none',
+        cursor: isLoading ? 'wait' : 'pointer', 
+        display: 'inline-block', 
+        padding: '5px',
+        outline: 'none'
+      }}
+      aria-label={isFavorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
-        src="/assets/Icones SVG/Icone.Coracao.svg" 
-        className={styles.favoriteIcon} 
-        alt="Favoritar"
-        style={{ 
-          filter: isFavorited ? 'invert(27%) sepia(91%) saturate(2352%) hue-rotate(331%) brightness(94%) contrast(94%)' : 'none',
-          transition: 'all 0.2s ease'
-        }} 
+      <Image 
+        src={isFavorited 
+          ? "/assets/Icones SVG/Icone.CoracaoC.svg" 
+          : "/assets/Icones SVG/Icone.Coracao.svg"
+        }
+        alt="Coração de Favorito"
+        width={24}
+        height={24}
+        priority
+        style={{
+          opacity: isLoading ? 0.6 : 1,
+          transition: 'transform 0.2s ease',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
       />
     </button>
   );

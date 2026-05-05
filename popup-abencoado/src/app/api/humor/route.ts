@@ -1,4 +1,3 @@
-// src/app/api/humor/route.ts - Versão Sem Erros
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -26,7 +25,6 @@ const moodToTag: Record<string, string> = {
   gratidao: 'Gratidão'
 };
 
-// Cache em memória
 const versesByTag: Record<string, Verse[]> = {};
 
 export async function POST(req: Request) {
@@ -40,7 +38,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Sentimento inválido' }, { status: 400 });
     }
 
-    // Se não tem cache para esta tag, buscar
     if (!versesByTag[tag]) {
       const { data, error } = await supabase
         .from('versiculos')
@@ -55,15 +52,12 @@ export async function POST(req: Request) {
       console.log(`[CACHE] Carregado ${data.length} versículos para ${tag}`);
     }
     
-    // Sortear versículo aleatório
     const verses = versesByTag[tag];
     const randomIndex = Math.floor(Math.random() * verses.length);
     const randomVerse = verses[randomIndex];
 
-    // Registrar daily_mood em background (sem await)
     const today = new Date().toISOString().split('T')[0];
     
-    // Usar async/await dentro de uma IIFE para evitar erros
     (async () => {
       try {
         await supabase
@@ -85,6 +79,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       data: {
+        id: randomVerse.id,
         texto: randomVerse.texto,
         ref: randomVerse.referencia || `${randomVerse.book} ${randomVerse.chapter}:${randomVerse.verse}`
       }
