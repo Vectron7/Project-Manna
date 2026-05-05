@@ -1,0 +1,210 @@
+.mainWrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
+.backgroundContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.backgroundImage {
+  object-fit: cover;
+}
+
+.contentOverlay {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.mainPaper {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 1200px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.navigationHeader {
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #5a3e2b;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.navButton:hover {
+  background: rgba(90, 62, 43, 0.1);
+}
+
+.separator {
+  color: #999;
+  font-size: 1.2rem;
+}
+
+.currentChapter {
+  color: #333;
+  font-weight: 600;
+}
+
+.divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.scrollContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.gridSelecao {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.bookButton, .chapterButton {
+  padding: 14px 12px;
+  background: linear-gradient(135deg, #f5f0e8 0%, #e8dfd3 100%);
+  border: 1px solid #d4c5b0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4a3728;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.bookButton:hover, .chapterButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #efe4d6 0%, #ddd0be 100%);
+  border-color: #b8a48c;
+}
+
+.fonteBiblica {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #2c2418;
+}
+
+.verseParagraph {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.versiculoNumero {
+  font-size: 0.85rem;
+  background: #e8dfd3;
+  color: #5a3e2b;
+  min-width: 32px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  padding: 0 6px;
+  font-family: monospace;
+}
+
+.verseText {
+  flex: 1;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: #7d634f;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .mainPaper {
+    height: 90vh;
+    width: 100%;
+  }
+
+  .gridSelecao {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+  }
+
+  .bookButton, .chapterButton {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  .fonteBiblica {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .navigationHeader {
+    padding: 12px 16px;
+  }
+
+  .navButton {
+    font-size: 0.85rem;
+  }
+
+  .versiculoNumero {
+    min-width: 28px;
+    height: 22px;
+    font-size: 0.75rem;
+  }
+}
+
+.testamentoSection {
+  margin-bottom: 32px;
+}
+
+.testamentoTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #5a3e2b;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #d4c5b0;
+  font-family: 'Calligraffitti', cursive;
+}
+
+.testamentoSection:last-child {
+  margin-bottom: 0;
+}

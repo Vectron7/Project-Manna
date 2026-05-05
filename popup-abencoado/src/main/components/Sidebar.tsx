@@ -45,10 +45,10 @@ export default function Sidebar() {
         </div>
 
         <nav className={styles.navLinks}>
-          <a href="#biblia" className={styles.navItem}>
+          <Link href="/bible" className={styles.navItem}>
             <Image src="/assets/Icones SVG/Icone.Biblia.svg" alt="" width={30} height={30} />
             Bíblia
-          </a>
+          </Link>
           <Link href="/favorites" className={styles.navItem} onClick={() => setIsOpen(false)}>
             <Image src="/assets/Icones SVG/Icone.Coracao.svg" alt="" width={30} height={30} />
             Favoritos
