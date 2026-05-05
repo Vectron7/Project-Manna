@@ -21,19 +21,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: ./popup-abencoado/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: ./popup-abencoado
 
       - name: Lint
         run: npm run lint
+        working-directory: ./popup-abencoado
 
       - name: Build Test
         run: npm run build
+        working-directory: ./popup-abencoado
         env:
-          NEXT_PUBLIC_URL: "https://vectron7.github.io/Project-Manna"
           NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
           NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
