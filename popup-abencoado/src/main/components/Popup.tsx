@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useSyncExternalStore } from 'react';
 import { getOrSetUserId } from '../utils/userPersistence';
+import FavoriteButton from './FavoriteButton';
 import styles from './popup.module.css';
 
 const feelings = [
@@ -19,44 +20,46 @@ const getRandomFeeling = () => {
 };
 
 function useIsClient() {
-  return useSyncExternalStore(() => () => {}, () => true, () => false);
+  return useSyncExternalStore(
+    () => () => {}, 
+    () => true, 
+    () => false
+  );
 }
 
 export default function Popup() {
   const isClient = useIsClient();
   const [dismissed, setDismissed] = useState(false);
-  const [mappedVerse, setMappedVerse] = useState<{ texto: string; ref: string } | null>(null);
+  const [mappedVerse, setMappedVerse] = useState<{ id: string; texto: string; ref: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [shouldShowInitially] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    const id = getOrSetUserId();
-    const today = new Date().toISOString().split('T')[0];
-    return localStorage.getItem(`mood_response_${id}`) !== today;
-  });
-
-  const shouldShow = isClient && !dismissed && shouldShowInitially;
 
   const handleSelection = useCallback(async (feeling: string) => {
     if (isLoading) return;
     const id = getOrSetUserId();
     if (!id) return;
     setIsLoading(true);
+    
     let selectedFeeling = feeling;
     if (feeling === 'privado') {
-      const storageKey = `private_clicks_${id}`;
-      const count = parseInt(localStorage.getItem(storageKey) || '0') + 1;
-      localStorage.setItem(storageKey, count.toString());
-      if (count >= 5) selectedFeeling = getRandomFeeling();
+      selectedFeeling = getRandomFeeling();
     }
+
     try {
       const response = await fetch(`/api/humor?t=${Date.now()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ feeling: selectedFeeling, userId: id }),
       });
+      
       const result = await response.json();
-      setMappedVerse(result.data);
-      localStorage.setItem(`mood_response_${id}`, new Date().toISOString().split('T')[0]);
+
+      if (result.data) {
+        setMappedVerse({
+          id: result.data.id,
+          texto: result.data.texto,
+          ref: result.data.ref
+        });
+      }
     } catch (err) {
       console.error("Erro na rota de humor:", err);
     } finally {
@@ -64,23 +67,27 @@ export default function Popup() {
     }
   }, [isLoading]);
 
-  const handleClose = () => { setDismissed(true); setMappedVerse(null); };
+  const handleClose = () => { 
+    setDismissed(true); 
+    setMappedVerse(null); 
+  };
 
-  if (!shouldShow) return null;
+  if (!isClient || dismissed) return null;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.popupCard}>
-        <button className={styles.btnCloseX} onClick={handleClose} aria-label="Fechar">✕</button>
         {!mappedVerse ? (
           <div className={styles.selectionState}>
             <div className={styles.headerBox}>
               <h2 className={styles.title}>Como está se sentindo hoje?</h2>
             </div>
             {isLoading ? (
-              <p style={{ textAlign: 'center', padding: '2rem' }}>Buscando versículo...</p>
+              <div className={styles.loadingContainer}>
+                <p>Buscando versículo...</p>
+              </div>
             ) : (
-              <>
+              <div className={styles.containerSelecao}>
                 <div className={styles.grid}>
                   {feelings.map((f) => (
                     <button key={f.id}
@@ -90,32 +97,30 @@ export default function Popup() {
                     </button>
                   ))}
                 </div>
-                <button className={styles.btnLong} onClick={() => handleSelection('privado')}>
-                  Prefiro não dizer hoje
-                </button>
-              </>
+                <div className={styles.footerAcao}>
+                    <button className={styles.btnLong} onClick={() => handleSelection('privado')}>
+                      Prefiro não dizer hoje
+                    </button>
+                </div>
+              </div>
             )}
           </div>
         ) : (
           <div className={styles.verseWrapper}>
+            <button className={styles.btnCloseX} onClick={handleClose}>✕</button>
             <div className={styles.paperBase}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/Itens Recortados/FolhasdePapel05.png" alt="Papel de Fundo" className={styles.imgFull} />
             </div>
             <div className={styles.mainPaper}>
               <div className={styles.tapeLayer}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/Itens Recortados/Fita06.png" alt="Fita Adesiva" className={styles.imgFull} />
+                <img src="/assets/Itens Recortados/Fita06.png" alt="" className={styles.imgFull} />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/Itens Recortados/FolhasdePapel07.png" alt="Papel Versículo" className={styles.imgFull} />
+              <img src="/assets/Itens Recortados/FolhasdePapel07.png" alt="" className={styles.imgFull} />
               <div className={styles.verseContent}>
                 <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
                 <span className={styles.verseRef}>{mappedVerse.ref}</span>
-                <button className={styles.btnFavorite} onClick={handleClose}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/Icones SVG/Icone.Coracao.svg" className={styles.favoriteIcon} alt="Favoritar" />
-                </button>
+                <FavoriteButton verseId={mappedVerse.id} />
               </div>
             </div>
           </div>

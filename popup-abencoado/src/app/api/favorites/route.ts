@@ -1,48 +1,37 @@
 import { NextResponse } from 'next/server';
-import { favoriteService } from '../../../main/service/favoriteService';
+import { PostgrestError } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase'; 
 
-export async function GET(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'userId é obrigatório' },
-        { status: 400 }
-      );
-    }
-
-    const favoritos = await favoriteService.buscarFavoritos(userId);
-
-    return NextResponse.json({ success: true, data: favoritos });
-  } catch (error) {
-    console.error('[API/favorites GET]', error);
-    return NextResponse.json(
-      { error: 'Erro interno ao buscar favoritos' },
-      { status: 500 }
-    );
-  }
+interface FavoriteRequestBody {
+  verseId: string;
 }
 
 export async function POST(req: Request) {
   try {
-    const { userId, verseId, origin } = await req.json();
+    const { verseId }: FavoriteRequestBody = await req.json();
+    const STATIC_USER_ID = '00000000-0000-0000-0000-000000000000';
 
-    if (!userId || !verseId || !origin) {
-      return NextResponse.json(
-        { error: 'userId, verseId e origin são obrigatórios' },
-        { status: 400 }
-      );
-    }
+    console.log("Salvando favorito compartilhado para o versículo:", verseId);
 
-    const resultado = await favoriteService.toggleFavorite(userId, verseId, origin);
+    const { error } = await supabase
+      .from('favorites') 
+      .upsert([
+        { 
+          user_id: STATIC_USER_ID, 
+          verse_id: verseId 
+        }
+      ], { onConflict: 'user_id,verse_id' });
 
-    return NextResponse.json({ success: true, data: resultado });
-  } catch (error) {
-    console.error('[API/favorites POST]', error);
+    if (error) throw error;
+
+    return NextResponse.json({ success: true });
+
+  } catch (error: unknown) {
+    const err = error as PostgrestError;
+    console.error("Erro Supabase:", err.message);
+
     return NextResponse.json(
-      { error: 'Erro interno ao processar favorito' },
+      { error: err.message, code: err.code }, 
       { status: 500 }
     );
   }
