@@ -49,14 +49,6 @@ export default function Sidebar() {
             <Image src="/assets/Icones SVG/Icone.Coracao.svg" alt="" width={30} height={30} />
             Favoritos
           </a>
-          <a href="#reflexoes" className={styles.navItem}>
-            <Image src="/assets/Icones SVG/Icone.Coroa.svg" alt="" width={30} height={30} />
-            Reflexões
-          </a>
-          <a href="#paraHoje" className={styles.navItem}>
-            <Image src="/assets/Icones SVG/Icone.Maos.svg" alt="" width={30} height={30} />
-            Para hoje
-          </a>
         </nav>
       </div>
 
