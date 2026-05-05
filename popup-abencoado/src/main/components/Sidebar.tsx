@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from './sidebar.module.css';
+import Link from 'next/link';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,14 +27,17 @@ export default function Sidebar() {
 
       <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
         <div className={styles.header}>
-          <div className={styles.logoContainer}>
+          {/* Envolvendo a Logo com Link para a Home */}
+          <Link href="/" className={styles.logoContainer} onClick={() => setIsOpen(false)}>
             <Image 
               src="/assets/Logo e Wallpapers/Logo.svg" 
               alt="Logo" 
               width={500} 
               height={500} 
+              priority
             />
-          </div>
+          </Link>
+          
           <div className={styles.saudacaoSide}>
             <p>Bom dia,</p>
             <p style={{ fontSize: '1.8rem' }}>Abençoado!</p>
@@ -45,10 +49,10 @@ export default function Sidebar() {
             <Image src="/assets/Icones SVG/Icone.Biblia.svg" alt="" width={30} height={30} />
             Bíblia
           </a>
-          <a href="#favoritos" className={styles.navItem}>
+          <Link href="/favorites" className={styles.navItem} onClick={() => setIsOpen(false)}>
             <Image src="/assets/Icones SVG/Icone.Coracao.svg" alt="" width={30} height={30} />
             Favoritos
-          </a>
+          </Link>
         </nav>
       </div>
 

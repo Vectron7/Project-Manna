@@ -109,8 +109,6 @@ export default function Popup() {
           <div className={styles.verseWrapper}>
             <button className={styles.btnCloseX} onClick={handleClose}>✕</button>
             <div className={styles.paperBase}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/Itens Recortados/FolhasdePapel05.png" alt="" className={styles.imgFull} />
             </div>
             <div className={styles.mainPaper}>
               <div className={styles.tapeLayer}>
