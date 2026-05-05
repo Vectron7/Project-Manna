@@ -1,9 +1,10 @@
 .overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  /* Remove a imagem daqui - wallpaper de Cristo deve estar no body/layout */
-  background-color: rgba(0, 0, 0, 0.3); /* Apenas um escurecimento opcional */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +21,30 @@
   justify-content: center;
 }
 
-/* O "Retângulo Escuro" que agora tem o Wallpaper.Ceu.png como fundo */
+.btnCloseX {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.btnCloseX:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
 .selectionState {
   position: relative;
   z-index: 10;
@@ -29,33 +53,11 @@
   align-items: center;
   width: 100%;
   padding: 60px;
-  background-image: url('/assets/Logo e Wallpapers/Wallpaper.Ceu.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  /* Mantém o escurecimento para legibilidade do texto */
-  background-color: rgba(0, 0, 0, 0.35);
-  background-blend-mode: overlay; /* Mistura a imagem com o escurecimento */
-  backdrop-filter: blur(8px);
   border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
-/* Ou, se preferir uma camada separada de escurecimento (mais flexível): */
-.selectionState {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 60px;
-  border-radius: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden; /* Para a imagem não vazar */
-}
-
-/* Camada de fundo do retângulo escuro */
 .selectionState::before {
   content: '';
   position: absolute;
@@ -68,10 +70,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.7; /* Ajuste a opacidade da imagem */
+  opacity: 0.7;
 }
 
-/* Camada de escurecimento/blur */
 .selectionState::after {
   content: '';
   position: absolute;
@@ -85,14 +86,9 @@
   border-radius: 40px;
 }
 
-/* O conteúdo fica acima das camadas */
-.selectionState > * {
+.headerBox {
   position: relative;
   z-index: 2;
-}
-
-/* O resto do CSS permanece igual */
-.headerBox {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px 60px;
   border-radius: 80px;
@@ -105,10 +101,12 @@
   color: #fff;
   font-size: 2.8rem;
   margin: 0;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
@@ -116,7 +114,9 @@
   max-width: 700px;
 }
 
-.btnOutline, .btnSolid, .btnLong {
+.btnOutline,
+.btnSolid,
+.btnLong {
   padding: 15px;
   border-radius: 50px;
   font-size: 1.2rem;
@@ -126,17 +126,43 @@
   align-items: center;
   justify-content: center;
   font-family: inherit;
+  position: relative;
+  z-index: 2;
 }
 
-.btnOutline { background: rgba(0, 0, 0, 0.5); border: 2px solid #a67c32; color: white; }
-.btnSolid { background: #e69138; border: 2px solid #e69138; color: #000; font-weight: bold; }
-.btnLong { width: 100%; max-width: 400px; background: rgba(0, 0, 0, 0.5); border: 2px solid #a67c32; color: white; margin-top: 20px; }
+.btnOutline {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #a67c32;
+  color: white;
+}
 
-/* HOVERS RESTAURADOS */
-.btnOutline:hover, .btnLong:hover { background: #a67c32; color: white; transform: scale(1.02); }
-.btnSolid:hover { background: #ffad52; transform: scale(1.02); }
+.btnSolid {
+  background: #e69138;
+  border: 2px solid #e69138;
+  color: #000;
+  font-weight: bold;
+}
 
-/* --- SEÇÃO SCRAPBOOK (VERSÍCULO) --- */
+.btnLong {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #a67c32;
+  color: white;
+  margin-top: 20px;
+}
+
+.btnOutline:hover,
+.btnLong:hover {
+  background: #a67c32;
+  color: white;
+  transform: scale(1.02);
+}
+
+.btnSolid:hover {
+  background: #ffad52;
+  transform: scale(1.02);
+}
 
 .verseWrapper {
   position: relative;
@@ -149,15 +175,15 @@
 
 .paperBase {
   position: absolute;
-  width: 100%; /* Folha 05 assume o lugar do retângulo escuro */
+  width: 100%;
   max-height: 90%;
   z-index: 1;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
 }
 
 .mainPaper {
   position: absolute;
-  width: 65%; /* Folha 07 centralizada e proporcional */
+  width: 65%;
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -167,11 +193,11 @@
 
 .tapeLayer {
   position: absolute;
-  top: -35px; 
-  width: 180px; /* Fita maior conforme solicitado */
+  top: -35px;
+  width: 180px;
   z-index: 10;
   transform: rotate(-4deg);
-  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.2));
 }
 
 .verseContent {
@@ -190,29 +216,100 @@
   font-size: 1.8rem;
   color: #4a3728;
   line-height: 1.2;
+  margin: 0;
 }
 
 .verseRef {
   font-weight: bold;
   color: #7d634f;
   font-size: 1.1rem;
+  margin: 0;
 }
 
-.btnAmen {
-  margin-top: 20px;
-  background: #f4ece1;
-  border: 1px solid #7d634f;
-  padding: 8px 35px;
-  color: #4a3728;
+.btnFavorite {
+  background: transparent;
+  border: none;
   cursor: pointer;
-  border-radius: 4px;
-  transition: 0.2s;
+  padding: 10px;
+  margin-top: 15px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btnAmen:hover { background: #7d634f; color: white; }
+.btnFavorite:hover {
+  transform: scale(1.2);
+}
+
+.favoriteIcon {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
 
 .imgFull {
   width: 100%;
   height: auto;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .selectionState {
+    padding: 30px;
+  }
+
+  .headerBox {
+    padding: 10px 30px;
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .grid {
+    gap: 12px;
+  }
+
+  .btnOutline,
+  .btnSolid,
+  .btnLong {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .btnCloseX {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .verseText {
+    font-size: 1.2rem;
+  }
+
+  .verseRef {
+    font-size: 0.9rem;
+  }
+
+  .favoriteIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mainPaper {
+    width: 80%;
+  }
+
+  .verseContent {
+    width: 80%;
+  }
+
+  .tapeLayer {
+    width: 120px;
+    top: -25px;
+  }
 }
