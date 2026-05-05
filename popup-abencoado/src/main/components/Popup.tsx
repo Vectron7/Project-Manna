@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useSyncExternalStore } from 'react';
 import { getOrSetUserId } from '../utils/userPersistence';
+import { FavoriteButton } from './FavoriteButton';
 import styles from './popup.module.css';
 
 const feelings = [
@@ -25,8 +26,10 @@ function useIsClient() {
 export default function Popup() {
   const isClient = useIsClient();
   const [dismissed, setDismissed] = useState(false);
-  const [mappedVerse, setMappedVerse] = useState<{ texto: string; ref: string } | null>(null);
+  // Adicionei o campo 'id' no tipo para o favorito funcionar
+  const [mappedVerse, setMappedVerse] = useState<{ id: string; texto: string; ref: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  
   const [shouldShowInitially] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     const id = getOrSetUserId();
@@ -42,12 +45,14 @@ export default function Popup() {
     if (!id) return;
     setIsLoading(true);
     let selectedFeeling = feeling;
+    
     if (feeling === 'privado') {
       const storageKey = `private_clicks_${id}`;
       const count = parseInt(localStorage.getItem(storageKey) || '0') + 1;
       localStorage.setItem(storageKey, count.toString());
       if (count >= 5) selectedFeeling = getRandomFeeling();
     }
+
     try {
       const response = await fetch(`/api/humor?t=${Date.now()}`, {
         method: 'POST',
@@ -55,7 +60,9 @@ export default function Popup() {
         body: JSON.stringify({ feeling: selectedFeeling, userId: id }),
       });
       const result = await response.json();
-      setMappedVerse(result.data);
+
+      setMappedVerse(result.data); 
+      
       localStorage.setItem(`mood_response_${id}`, new Date().toISOString().split('T')[0]);
     } catch (err) {
       console.error("Erro na rota de humor:", err);
@@ -68,10 +75,13 @@ export default function Popup() {
 
   if (!shouldShow) return null;
 
+  const currentUserId = getOrSetUserId();
+
   return (
     <div className={styles.overlay}>
       <div className={styles.popupCard}>
         <button className={styles.btnCloseX} onClick={handleClose} aria-label="Fechar">✕</button>
+        
         {!mappedVerse ? (
           <div className={styles.selectionState}>
             <div className={styles.headerBox}>
@@ -102,20 +112,23 @@ export default function Popup() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/Itens Recortados/FolhasdePapel05.png" alt="Papel de Fundo" className={styles.imgFull} />
             </div>
+            
             <div className={styles.mainPaper}>
               <div className={styles.tapeLayer}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/assets/Itens Recortados/Fita06.png" alt="Fita Adesiva" className={styles.imgFull} />
               </div>
+              
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/Itens Recortados/FolhasdePapel07.png" alt="Papel Versículo" className={styles.imgFull} />
+              
               <div className={styles.verseContent}>
                 <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
                 <span className={styles.verseRef}>{mappedVerse.ref}</span>
-                <button className={styles.btnFavorite} onClick={handleClose}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/Icones SVG/Icone.Coracao.svg" className={styles.favoriteIcon} alt="Favoritar" />
-                </button>
+                <FavoriteButton 
+                  userId={currentUserId} 
+                  verseId={mappedVerse.id} 
+                />
               </div>
             </div>
           </div>
