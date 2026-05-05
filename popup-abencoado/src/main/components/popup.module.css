@@ -1,10 +1,9 @@
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  /* Remove a imagem daqui - wallpaper de Cristo deve estar no body/layout */
+  background-color: rgba(0, 0, 0, 0.3); /* Apenas um escurecimento opcional */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,34 +11,88 @@
 }
 
 .popupCard {
-  width: 90%;
-  max-width: 800px;
-  padding: 60px 40px;
-  border-radius: 20px;
+  width: 95%;
+  max-width: 1000px;
+  height: 80vh;
   position: relative;
-  overflow: hidden;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  background-image: url('/assets/Logo e Wallpapers/Wallpaper.Ceu.png');
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* O "Retângulo Escuro" que agora tem o Wallpaper.Ceu.png como fundo */
+.selectionState {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding: 60px;
+  background-image: url('/assets/Logo e Wallpapers/Wallpaper.Ceu.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Mantém o escurecimento para legibilidade do texto */
+  background-color: rgba(0, 0, 0, 0.35);
+  background-blend-mode: overlay; /* Mistura a imagem com o escurecimento */
+  backdrop-filter: blur(8px);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.popupCard::before {
+/* Ou, se preferir uma camada separada de escurecimento (mais flexível): */
+.selectionState {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 60px;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden; /* Para a imagem não vazar */
+}
+
+/* Camada de fundo do retângulo escuro */
+.selectionState::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
-  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-image: url('/assets/Logo e Wallpapers/Wallpaper.Ceu.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.7; /* Ajuste a opacidade da imagem */
 }
 
-.headerBox {
+/* Camada de escurecimento/blur */
+.selectionState::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  border-radius: 40px;
+}
+
+/* O conteúdo fica acima das camadas */
+.selectionState > * {
   position: relative;
   z-index: 2;
+}
+
+/* O resto do CSS permanece igual */
+.headerBox {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px 60px;
   border-radius: 80px;
@@ -50,19 +103,17 @@
 .title {
   font-family: 'Calligraffitti', cursive;
   color: #fff;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
 
 .grid {
-  position: relative;
-  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   width: 100%;
-  margin-bottom: 20px;
+  max-width: 700px;
 }
 
 .btnOutline, .btnSolid, .btnLong {
@@ -70,43 +121,98 @@
   border-radius: 50px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
+  transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: inherit;
 }
 
-.btnOutline {
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid #a67c32;
-  color: white;
-}
+.btnOutline { background: rgba(0, 0, 0, 0.5); border: 2px solid #a67c32; color: white; }
+.btnSolid { background: #e69138; border: 2px solid #e69138; color: #000; font-weight: bold; }
+.btnLong { width: 100%; max-width: 400px; background: rgba(0, 0, 0, 0.5); border: 2px solid #a67c32; color: white; margin-top: 20px; }
 
-.btnSolid {
-  background: #e69138;
-  border: 2px solid #e69138;
-  color: #000;
-  font-weight: bold;
-}
+/* HOVERS RESTAURADOS */
+.btnOutline:hover, .btnLong:hover { background: #a67c32; color: white; transform: scale(1.02); }
+.btnSolid:hover { background: #ffad52; transform: scale(1.02); }
 
-.btnLong {
+/* --- SEÇÃO SCRAPBOOK (VERSÍCULO) --- */
+
+.verseWrapper {
   position: relative;
-  z-index: 2;
   width: 100%;
-  max-width: 400px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid #a67c32;
-  color: white;
-  margin-top: 10px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.btnOutline:hover, .btnLong:hover {
-  background: rgba(166, 124, 50, 0.2);
-  transform: scale(1.02);
+.paperBase {
+  position: absolute;
+  width: 100%; /* Folha 05 assume o lugar do retângulo escuro */
+  max-height: 90%;
+  z-index: 1;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
 }
 
-.btnSolid:hover {
-  background: #ffaa4f;
-  transform: scale(1.02);
+.mainPaper {
+  position: absolute;
+  width: 65%; /* Folha 07 centralizada e proporcional */
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tapeLayer {
+  position: absolute;
+  top: -35px; 
+  width: 180px; /* Fita maior conforme solicitado */
+  z-index: 10;
+  transform: rotate(-4deg);
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
+}
+
+.verseContent {
+  position: absolute;
+  z-index: 5;
+  width: 70%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.verseText {
+  font-family: 'Calligraffitti', cursive;
+  font-size: 1.8rem;
+  color: #4a3728;
+  line-height: 1.2;
+}
+
+.verseRef {
+  font-weight: bold;
+  color: #7d634f;
+  font-size: 1.1rem;
+}
+
+.btnAmen {
+  margin-top: 20px;
+  background: #f4ece1;
+  border: 1px solid #7d634f;
+  padding: 8px 35px;
+  color: #4a3728;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.btnAmen:hover { background: #7d634f; color: white; }
+
+.imgFull {
+  width: 100%;
+  height: auto;
+  display: block;
 }

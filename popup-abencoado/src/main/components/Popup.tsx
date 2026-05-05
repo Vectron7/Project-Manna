@@ -57,8 +57,6 @@ export default function Popup() {
       });
 
       const result = await response.json();
-      
-      console.log("✨ Versículo Gerado:", result.data.texto);
       setMappedVerse(result.data);
       
       const today = new Date().toISOString().split('T')[0];
@@ -102,15 +100,32 @@ export default function Popup() {
             </button>
           </div>
         ) : (
-          <div className={styles.verseState}>
-            <div className={styles.paperBackground}>
-              <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
-              <span className={styles.verseRef}>{mappedVerse.ref}</span>
+          <div className={styles.verseWrapper}>
+            {/* CAMADA 1: Folha 05 (Papel Grande de Fundo) */}
+            <div className={styles.paperBase}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/Itens Recortados/FolhasdePapel05.png" alt="Papel de Fundo" className={styles.imgFull} />
+            </div>
+
+            {/* CAMADA 2: Folha 07 (Papel Central) */}
+            <div className={styles.mainPaper}>
+              {/* FITA 06 (Ancorada no topo do papel central) */}
+              <div className={styles.tapeLayer}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/Itens Recortados/Fita06.png" alt="Fita Adesiva" className={styles.imgFull} />
+              </div>
+
+              {/* Imagem do Papel Central */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/Itens Recortados/FolhasdePapel07.png" alt="Papel Versículo" className={styles.imgFull} />
               
-              <div className={styles.actions}>
-                 <button className={styles.btnClose} onClick={handleClose}>
-                    Amém
-                 </button>
+              {/* Texto do Versículo */}
+              <div className={styles.verseContent}>
+                <p className={styles.verseText}>&ldquo;{mappedVerse.texto}&rdquo;</p>
+                <span className={styles.verseRef}>{mappedVerse.ref}</span>
+                <button className={styles.btnAmen} onClick={handleClose}>
+                  Amém
+                </button>
               </div>
             </div>
           </div>
