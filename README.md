@@ -27,7 +27,7 @@
 | **Jenifer Gomes** | Frontend |
 | **Luís Gabriel** | UX/UI |
 | **Philipe Gonçalves** | Backend |
-| **Victor Herédia** | Integraçãp |
+| **Victor Herédia** | Integração |
 
 ---
 
